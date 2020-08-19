@@ -1,17 +1,24 @@
 {
-  "name": "",
-  "version": "",
+  "name": "ghrsea11-fec-proxy",
+  "version": "1.0.0",
   "description": "",
-  "author": "",
+  "author": "Joel Carpenter",
   "license": "",
   "engines": {
     "node": ">=6.13.0"
   },
   "scripts": {
+    "start": "nodemon --watch server ./server/index.js"
   },
   "dependencies": {
+    "axios": "^0.19.2",
+    "express": "^4.17.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
   },
   "devDependencies": {
-    "eslint-config-hackreactor": "git://github.com/reactorcore/eslint-config-hackreactor"
+    "eslint-config-hackreactor": "git://github.com/reactorcore/eslint-config-hackreactor",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.4"
   }
 }
