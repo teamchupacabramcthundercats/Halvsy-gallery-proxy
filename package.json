@@ -8,10 +8,12 @@
     "node": ">=6.13.0"
   },
   "scripts": {
-    "start": "nodemon --watch server ./server/index.js"
+    "start": "node ./server/index.js",
+    "start-dev": "nodemon --watch server ./server/index.js"
   },
   "dependencies": {
     "axios": "^0.19.2",
+    "compression": "^1.7.4",
     "express": "^4.17.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"

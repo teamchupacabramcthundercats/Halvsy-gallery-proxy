@@ -1,18 +1,25 @@
 const express = require('express');
 const axios = require('axios');
 const morgan = require('morgan');
+const compression = require('compression');
 
 const app = express();
 const port = 3333;
 const path = '/product/:productId'
 
+const GALLERY_URL = `http://EtsyGalleryLoadBalancer-33db76ca545177a3.elb.us-west-2.amazonaws.com:7777`;
+const REVIEW_URL = 'http://Ghrsea11frontendcapstoneLoadBala-4e0cad97e0939acd.elb.us-west-2.amazonaws.com:3000';
+
+app.use(compression());
 app.use(morgan('dev'));
 app.use(path, express.static('./public'));
 
 // Routes
 //Gallery Service
 app.get(`${path}/gallery/bundle.js`, (req, res) => {
-  axios.get('http://localhost:7777/bundle.js')
+  const { productId } = req.params;
+
+  axios.get(`${GALLERY_URL}/product/${productId}/bundle.js`)
     .then((response) => {
       res.send(response.data);
     })
@@ -25,7 +32,7 @@ app.get(`${path}/gallery/bundle.js`, (req, res) => {
 app.get(`/api/images/:productId`, (req, res) => {
   const { productId } = req.params;
 
-  axios.get(`http://localhost:7777/api/images/${productId}`)
+  axios.get(`${GALLERY_URL}/api/images/${productId}`)
     .then((response) => {
       res.send(response.data);
     })
@@ -38,7 +45,7 @@ app.get(`/api/images/:productId`, (req, res) => {
 app.patch(`/api/favorite/:productId`, (req, res) => {
   const { productId } = req.params;
 
-  axios.patch(`http://localhost:7777/api/favorite/${productId}`)
+  axios.patch(`${GALLERY_URL}/api/favorite/${productId}`)
     .then((response) => {
       res.send(response.data);
     })
@@ -50,7 +57,9 @@ app.patch(`/api/favorite/:productId`, (req, res) => {
 
 // Reviews Service
 app.get(`${path}/reviews/bundle.js`, (req, res) => {
-  axios.get(`http://localhost:3000${path}/bundle.js`)
+  const { productId } = req.params;
+
+  axios.get(`${REVIEW_URL}/product/${productId}/bundle.js`)
     .then((response) => {
       res.send(response.data);
     })
@@ -63,7 +72,7 @@ app.get(`${path}/reviews/bundle.js`, (req, res) => {
 app.get(`/api/product/:productId`, (req, res) => {
   const { productId } = req.params;
 
-  axios.get(`http://localhost:3000/api/product/${productId}`)
+  axios.get(`${REVIEW_URL}/api/product/${productId}`)
     .then((response) => {
       res.send(response.data);
     })
