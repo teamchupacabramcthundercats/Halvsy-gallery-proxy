@@ -2,6 +2,7 @@ const express = require('express');
 const axios = require('axios');
 const morgan = require('morgan');
 const compression = require('compression');
+const mcache = require('memory-cache');
 
 const app = express();
 const port = 3333;
@@ -14,9 +15,34 @@ app.use(compression());
 app.use(morgan('dev'));
 app.use(path, express.static('./public'));
 
+/* Please note the cache function was borrowed from an article on medium.com.
+  I've looked it over and understand what it's doing so I didn't see any reason
+  to rewrite the function as it serves my purpose perfectly.
+  I'm utilizing it to cache the bundle.js files.
+
+  URL: https://medium.com/the-node-js-collection/simple-server-side-cache-for-express-js-with-node-js-45ff296ca0f0
+*/
+const cache = (duration) => {
+  return (req, res, next) => {
+    let key = '__express__' + req.originalUrl || req.url
+    let cachedBody = mcache.get(key)
+    if (cachedBody && cachedBody !== "Not Found") {
+      res.send(cachedBody)
+      return
+    } else {
+      res.sendResponse = res.send
+      res.send = (body) => {
+        mcache.put(key, body, duration * 1000);
+        res.sendResponse(body)
+      }
+      next()
+    }
+  }
+}
+
 // Routes
 //Gallery Service
-app.get(`${path}/gallery/bundle.js`, (req, res) => {
+app.get(`${path}/gallery/bundle.js`, cache(7200), (req, res) => {
   const { productId } = req.params;
 
   axios.get(`${GALLERY_URL}/product/${productId}/bundle.js`)
@@ -56,7 +82,7 @@ app.patch(`/api/favorite/:productId`, (req, res) => {
 });
 
 // Reviews Service
-app.get(`${path}/reviews/bundle.js`, (req, res) => {
+app.get(`${path}/reviews/bundle.js`, cache(7200), (req, res) => {
   const { productId } = req.params;
 
   axios.get(`${REVIEW_URL}/product/${productId}/bundle.js`)
@@ -69,7 +95,7 @@ app.get(`${path}/reviews/bundle.js`, (req, res) => {
     });
 });
 
-app.get(`/api/product/:productId`, (req, res) => {
+app.get(`/api/product/:productId`, cache(7200), (req, res) => {
   const { productId } = req.params;
 
   axios.get(`${REVIEW_URL}/api/product/${productId}`)
