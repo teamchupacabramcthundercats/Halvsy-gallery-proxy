@@ -1,35 +1,13 @@
-# Proxy Server for Front End Capstone project
+# Proxy Server for Halvsy
 
-This repo houses the proxy server for my front end capstone project.  The goal is to use the proxy server to serve up the gallery and reviews components created by Daniel Co and I as services in an effort to recreate a portion of Etsy's item sales page.  This project is intended purely to be an opportunity to expand our skill set and showcase our work.
+Welcome!  This browser houses a proxy server that I built to demo the Halvsy Gallery and Reviews components.
+
+It's a fairly bare bones proxy server that renders the components on a blank html page and routes requests as necessary.  There were some additional features implemented to help improve performance while demoing the components such as a server-side cache utilizing memory-cache.  It was also dockerized for quick deployment via AWS.  However, as it was only a supporting project for the Halvsy components, it never really got the work put into it that it needed to be a stand-alone project.
+
+If you have questions about the proxy server, or the Halvsy components, please feel free to reach out!  I'd be happy to discuss it.
 
 ## Related Projects
 
-  - https://github.com/teamchupacabramcthundercats/etsy-gallery
-  - https://github.com/teamchupacabramcthundercats/etsy-reviews
-
-## Table of Contents
-
-1. [Usage](#Usage)
-1. [Requirements](#requirements)
-1. [Development](#development)
-
-## Usage
-
-> Some usage instructions
-
-## Requirements
-
-An `nvmrc` file is included if using [nvm](https://github.com/creationix/nvm).
-
-- Node v12.18.3
-
-## Development
-
-### Installing Dependencies
-
-From within the root directory:
-
-```sh
-npm install
-```
+  - [Halvsy Gallery](https://github.com/teamchupacabramcthundercats/Halvsy-gallery)
+  - [Halvsy Reviews](https://github.com/teamchupacabramcthundercats/etsy-reviews)
 
